@@ -34,8 +34,7 @@ protected:
 
 //-------------------------------------------------------------------------
 
-class EjesRGB : public Entity 
-{
+class EjesRGB : public Entity {
 public:
 	EjesRGB(GLdouble l);
 	~EjesRGB();
@@ -45,8 +44,7 @@ public:
 //-------------------------------------------------------------------------
 
 
-class Poliespiral : public Entity
-{
+class Poliespiral : public Entity{
 public:
 	Poliespiral(glm::dvec2 verIni, GLdouble angIni, GLdouble incrAng, GLdouble ladoIni,
 		GLdouble incrLado, GLdouble numVert);
@@ -55,5 +53,24 @@ public:
 };
 
 //-------------------------------------------------------------------------
+
+class Dragon : public Entity {
+public:
+	Dragon(GLuint numVert);
+	~Dragon();
+	virtual void render(Camera const& cam);
+};
+
+//-------------------------------------------------------------------------
+
+class TrianguloRGB : public Entity {
+public:
+	TrianguloRGB(GLdouble r);
+	~TrianguloRGB();
+	virtual void render(Camera const& cam);
+};
+
+//-------------------------------------------------------------------------
+
 
 #endif //_H_Entities_H_

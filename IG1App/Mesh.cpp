@@ -83,10 +83,10 @@ Mesh* Mesh::generaPoliespiral(dvec2 verIni, GLdouble angIni, GLdouble incrAng, G
 
 	for (int i = 1; i < m->numVertices; i++) {
 		//Calculamos x del nuevo vértice.
-		x = x + lado * cos(radians(angulo));
+		x += lado * cos(radians(angulo));
 
 		//Calculamos y del nuevo vértice.
-		y = y + lado * sin(radians(angulo));
+		y += lado * sin(radians(angulo));
 
 		//Añadimos el nuevo vértice.
 		m->vertices[i] = dvec3(x,y,0.0);
@@ -98,4 +98,67 @@ Mesh* Mesh::generaPoliespiral(dvec2 verIni, GLdouble angIni, GLdouble incrAng, G
 
 	return m;
 }
+//-------------------------------------------------------------------------
 
+Mesh* Mesh::generaDragon(GLuint numVert) { //Ejercicio 2: crea un dragon
+	
+	Mesh* m = new Mesh();
+	m->primitive = GL_POINTS;
+	m->numVertices = numVert;	//Número de vértices de la figura que dibujamos. 
+
+	//Dibujamos objetos en 3 dimensiones, entonces tenemos 6 vértices.
+
+	m->vertices = new dvec3[m->numVertices];
+
+	m->vertices[0] = dvec3(0.0, 0.0, 0.0);
+
+	for (int i = 1; i < numVert; i++) {
+		if ((rand() / double(RAND_MAX)) < 0.787473)  // T1
+			m->vertices[i] = dvec3(0.824074 * m->vertices[i-1].x + 0.281482 * m->vertices[i - 1].y - 0.882290,
+									-0.212346 * m->vertices[i - 1].x + 0.864198 * m->vertices[i - 1].y - 0.110607,
+									0.0);
+		 else 
+			m->vertices[i] = dvec3(0.088272 * m->vertices[i - 1].x + 0.520988 * m->vertices[i - 1].y + 0.785360,
+								-0.463889 * m->vertices[i - 1].x - 0.377778 * m->vertices[i - 1].y + 8.095795,
+							0.0);
+
+	}
+
+	return m;
+}
+
+//-------------------------------------------------------------------------
+
+
+Mesh* Mesh::generaTriangulo(GLdouble r) { //Ejercicio 3: crea un triangulo RGB
+
+	//Se utilizan los siguientes parámetros:
+	//dvec2 centro = dvec2(0, 0);
+	double angIni = 90;
+	double incrAng = 120;
+
+	Mesh* m = new Mesh();
+	m->primitive = GL_TRIANGLES;
+	m->numVertices = 3;	//Número de vértices de la figura que dibujamos. 
+
+	//Dibujamos objetos en 3 dimensiones, entonces tenemos 6 vértices.
+
+	m->vertices = new dvec3[m->numVertices];
+
+	m->vertices[0] = dvec3(r*cos(radians(angIni)), r*sin(angIni), 0.0);
+	m->vertices[1] = dvec3(r*cos(radians(angIni + incrAng )), r*sin(radians(angIni + incrAng)), 0.0);
+	m->vertices[2] = dvec3(r*cos(radians(angIni + incrAng*2)), r*sin(radians(angIni + incrAng * 2)), 0.0);
+
+	return m;
+}
+
+Mesh* Mesh::generaTrianguloRGB(GLdouble r) { //Ejercicio 3: crea un triangulo RGB
+	Mesh* m = generaTriangulo(r);
+
+	m->colors = new dvec4[m->numVertices];
+	m->colors[0] = dvec4(1, 0, 0, 0);
+	m->colors[1] = dvec4(0, 1, 0, 0);
+	m->colors[2] = dvec4(0, 0, 1, 0);
+
+	return m;
+}
