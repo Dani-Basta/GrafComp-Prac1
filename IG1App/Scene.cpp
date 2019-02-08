@@ -19,13 +19,33 @@ void Scene::init()
   // grObjects.push_back(); 
 
   // Graphics objects (entities) of the scene
-  //grObjects.push_back(new EjesRGB(200.0)); //Añadimos los objetos en la escena. 
-  //estrella
+
+
+  //Ejes de la escena.
+  //grObjects.push_back(new EjesRGB(200.0)); 
+
+  //Poliespirales.
+
   //grObjects.push_back(new Poliespiral( dvec2(0.0, 0.0), 0.0, 160.0, 1.0, 1.0, 50.0) );
   //grObjects.push_back(new Poliespiral(dvec2(0.0, 0.0), 0.0, 72.0, 30.0, 0.001, 6.0)); //pentágono
   //grObjects.push_back(new Poliespiral(dvec2(0.0, 0.0), 0.0, 60.0, 0.5, 0.5, 100.0));
-  //grObjects.push_back(new Dragon( 3000 ) ); 
-  grObjects.push_back( new TrianguloRGB(200) );
+
+  //Dragon
+  //grObjects.push_back(new Dragon(3000));
+  
+  //Rectangulo  
+  //grObjects.push_back(new RectanguloRGB(200, 100));
+  
+  //Triangulo
+  //grObjects.push_back( new TrianguloRGB(300) );
+
+  //Estrella 3D
+  //grObjects.push_back( new Estrella3D(64,4,32,32));
+
+  //Caja 3D
+
+  grObjects.push_back(new Caja(60));
+
 
 }
 //-------------------------------------------------------------------------

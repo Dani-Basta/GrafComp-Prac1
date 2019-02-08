@@ -72,5 +72,37 @@ public:
 
 //-------------------------------------------------------------------------
 
+class RectanguloRGB : public Entity {
+public:
+	RectanguloRGB(GLdouble w, GLdouble h);
+	~RectanguloRGB();
+	virtual void render(Camera const& cam);
+};
+
+//-------------------------------------------------------------------------
+
+class Estrella3D: public Entity {
+public:
+	Estrella3D(GLdouble re, GLdouble np, GLdouble h, GLdouble ri);
+	~Estrella3D();
+	virtual void render(Camera const& cam);
+};
+
+//-------------------------------------------------------------------------
+
+
+class Caja : public Entity {
+public:
+	Caja(GLdouble l);
+	~Caja();
+	virtual void render(Camera const& cam);
+};
+
+//-------------------------------------------------------------------------
+
+
+
+
+
 
 #endif //_H_Entities_H_

@@ -1,5 +1,0 @@
-﻿  Mesh.cpp
-c:\hlocal\proyectosig_vs17_gl_fg_glm\ig1app\mesh.cpp(71): warning C4244: '=': conversion from 'GLdouble' to 'GLuint', possible loss of data
-c:\hlocal\proyectosig_vs17_gl_fg_glm\ig1app\mesh.cpp(84): warning C4018: '<': signed/unsigned mismatch
-c:\hlocal\proyectosig_vs17_gl_fg_glm\ig1app\mesh.cpp(115): warning C4018: '<': signed/unsigned mismatch
-  IG1App.vcxproj -> C:\hlocal\ProyectosIG_VS17_GL_FG_GLM\bin\IG1AppDebug.exe

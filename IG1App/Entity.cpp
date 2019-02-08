@@ -14,7 +14,6 @@ void Entity::uploadMvM(dmat4 const& modelViewMat) const
 	glLoadMatrixd(value_ptr(aMat));
 }
 //-------------------------------------------------------------------------
-//-------------------------------------------------------------------------
 
 EjesRGB::EjesRGB(GLdouble l): Entity() 
 {
@@ -134,3 +133,110 @@ void TrianguloRGB::render(Camera const& cam) {
 	}
 }
 //-------------------------------------------------------------------------
+
+
+RectanguloRGB::RectanguloRGB(GLdouble w, GLdouble h) : Entity() {
+	mesh = Mesh::generaRectanguloRGB(w,h);
+}
+//-------------------------------------------------------------------------
+
+RectanguloRGB::~RectanguloRGB() {
+	delete mesh; mesh = nullptr;
+};
+//-------------------------------------------------------------------------
+
+
+
+void RectanguloRGB::render(Camera const& cam) {
+	if (mesh != nullptr) {
+
+		dmat4 matAux = cam.getViewMat();
+		//matAux = rotate(matAux, glm::radians(25.0), dvec3(1, 1, 1));
+		matAux = rotate(matAux, glm::radians(-25.0), dvec3(0, 0, 100));
+
+
+		uploadMvM(matAux);
+
+		//glLineWidth(2); //Indicamos el grosor de las líneas con la que se renderizará la malla.
+		//glColor3d(0.0, 0.0, 1.0);	//Ponemos el color.
+		glPointSize(2);
+
+		//glPolygonMode(GL_BACK, GL_LINE);
+		//glPolygonMode(GL_BACK, GL_POINT);
+
+		mesh->render();
+
+		//glLineWidth(1); //Ponemos las opciones gráficas (el grosor de la línea) por defecto. Se hace por establecer un orden. MUY RECOMENDABLE. 
+		glPointSize(1);
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	}
+}
+//-------------------------------------------------------------------------
+
+Estrella3D::Estrella3D(GLdouble re, GLdouble np, GLdouble h, GLdouble ri) : Entity() {
+	mesh = Mesh::generaEstrella3D(re, np, h,ri);
+}
+//-------------------------------------------------------------------------
+
+Estrella3D::~Estrella3D() {
+	delete mesh; mesh = nullptr;
+};
+//-------------------------------------------------------------------------
+
+
+
+void Estrella3D::render(Camera const& cam) {
+	if (mesh != nullptr) {
+
+		uploadMvM(cam.getViewMat());
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glLineWidth(2); //Indicamos el grosor de las líneas con la que se renderizará la malla.
+		glColor3d(0.0, 0.5, 0.5);	//Ponemos el color.
+		//glPointSize(2);
+
+		//glPolygonMode(GL_BACK, GL_POINT);
+			
+		mesh->render();
+
+		glLineWidth(1); //Ponemos las opciones gráficas (el grosor de la línea) por defecto. Se hace por establecer un orden. MUY RECOMENDABLE. 
+		//glPointSize(1);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	}
+}
+//------------------------------------------------------------------------
+
+
+Caja::Caja(GLdouble l) : Entity() {
+	mesh = Mesh::generaContCubo(l);
+}
+//-------------------------------------------------------------------------
+
+Caja::~Caja() {
+	delete mesh; mesh = nullptr;
+};
+//-------------------------------------------------------------------------
+
+
+
+void Caja::render(Camera const& cam) {
+	if (mesh != nullptr) {
+
+		uploadMvM(cam.getViewMat());
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glLineWidth(2); //Indicamos el grosor de las líneas con la que se renderizará la malla.
+		glColor3d(0.0, 0.5, 0.5);	//Ponemos el color.
+		//glPointSize(2);
+
+		//glPolygonMode(GL_BACK, GL_POINT);
+
+		mesh->render();
+
+		glLineWidth(1); //Ponemos las opciones gráficas (el grosor de la línea) por defecto. Se hace por establecer un orden. MUY RECOMENDABLE. 
+		//glPointSize(1);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+	}
+}
+//------------------------------------------------------------------------

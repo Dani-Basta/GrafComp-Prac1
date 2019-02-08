@@ -141,10 +141,7 @@ Mesh* Mesh::generaTriangulo(GLdouble r) { //Ejercicio 3: crea un triangulo RGB
 	m->primitive = GL_TRIANGLES;
 	m->numVertices = 3;	//Número de vértices de la figura que dibujamos. 
 
-	//Dibujamos objetos en 3 dimensiones, entonces tenemos 6 vértices.
-
 	m->vertices = new dvec3[m->numVertices];
-
 	m->vertices[0] = dvec3(r*cos(radians(angIni)), r*sin(angIni), 0.0);
 	m->vertices[1] = dvec3(r*cos(radians(angIni + incrAng )), r*sin(radians(angIni + incrAng)), 0.0);
 	m->vertices[2] = dvec3(r*cos(radians(angIni + incrAng*2)), r*sin(radians(angIni + incrAng * 2)), 0.0);
@@ -161,4 +158,97 @@ Mesh* Mesh::generaTrianguloRGB(GLdouble r) { //Ejercicio 3: crea un triangulo RG
 	m->colors[2] = dvec4(0, 0, 1, 0);
 
 	return m;
+}
+
+
+Mesh* Mesh::generaRectangulo(GLdouble w, GLdouble h) {
+	 Mesh* m = new Mesh();
+	 m->primitive = GL_TRIANGLE_STRIP;
+	 m->numVertices = 4;	//Número de vértices de la figura que dibujamos. 4 porque es un rectángulo. 
+
+	 m->vertices = new dvec3[m->numVertices];
+
+	 //Se supone que el centro está en (0.0,0.0,0.0).
+	 m->vertices[0] = dvec3(-w/2,h/2,0.0);
+	 m->vertices[1] = dvec3(-w/2,-h/2,0.0);
+	 m->vertices[2] = dvec3(w/2,h/2 , 0.0);
+	 m->vertices[3] = dvec3(w/2, -h/2 , 0.0 );
+	 
+
+	 return m;
+
+}
+
+Mesh* Mesh::generaRectanguloRGB(GLdouble w, GLdouble h) { //Ejercicio 3: crea un triangulo RGB
+	Mesh* m = generaRectangulo(w,h);
+
+	m->colors = new dvec4[m->numVertices];
+	m->colors[0] = dvec4(1, 0, 0, 0);
+	m->colors[1] = dvec4(0, 1, 0, 0);
+	m->colors[2] = dvec4(0, 0, 1, 0);
+	m->colors[3] = dvec4(0,0,0,1);
+	
+	return m;
+}
+
+
+Mesh* Mesh::generaEstrella3D(GLdouble re, GLdouble np, GLdouble h, GLdouble ri) {  //Ejercicio 5: Estrella 3D.
+	Mesh* m = new Mesh();
+	m->primitive = GL_TRIANGLE_FAN;
+	m->numVertices = 2*np+2;	//Número de vértices de la figura que dibujamos. 4 porque es un rectángulo. 
+
+	m->vertices = new dvec3[m->numVertices];
+
+	//Se supone que el centro está en (0.0,0.0,0.0).
+	//AngIni es 90 y incrAng = 120.
+	GLdouble angIni = 90;
+	GLdouble incrAng = 180 / np;
+
+
+	m->vertices[0] = dvec3(0,0,0);
+	m->vertices[1] = dvec3(re*cos(radians(angIni)), re*sin(radians(angIni)),h);
+
+	for (int i = 2; i <= m->numVertices-2; i+=2) {
+		angIni += incrAng;
+		m->vertices[i] = dvec3(ri*cos(radians(angIni)), ri*sin(radians(angIni)), h);
+		angIni += incrAng;
+		m->vertices[i+1] = dvec3(re*cos(radians(angIni)), re*sin(radians(angIni)), h);
+	}
+
+	//m->vertices[m->numVertices-1]= dvec3(re*cos(radians(90)), re*sin(radians(90)), h);
+
+
+	return m;
+
+}
+
+Mesh* Mesh::generaContCubo(GLdouble l) {  //Ejercicio 6: Caja.
+	Mesh* m = new Mesh();
+	m->primitive = GL_TRIANGLE_STRIP;
+	m->numVertices = 10;	//Él numero de vertices de la caja. 
+
+	m->vertices = new dvec3[m->numVertices];
+
+	//Se supone que el centro está en (0.0,0.0,0.0).
+
+
+	GLdouble dist = l / 2;
+
+	m->vertices[0] = dvec3(-dist,dist,dist);
+	m->vertices[1] = dvec3(-dist, -dist, dist);
+
+	m->vertices[2] = dvec3(dist, dist, dist);
+	m->vertices[3] = dvec3(dist, -dist, dist);
+	m->vertices[4] = dvec3(dist, dist, -dist);
+	m->vertices[5] = dvec3(dist, -dist, -dist);
+	m->vertices[6] = dvec3(-dist, dist, -dist);
+	m->vertices[7] = dvec3(-dist, -dist, -dist);
+
+	m->vertices[8] = m->vertices[0];
+	m->vertices[9] = m->vertices[1];
+
+
+	return m;
+
+
 }

@@ -16,6 +16,10 @@ public:
 	static Mesh* generaDragon(GLuint numVert); //Ejercicio 2: crea un dragon
 	static Mesh* generaTriangulo(GLdouble r); //Ejercicio 3: triángulo RGB 
 	static Mesh* generaTrianguloRGB(GLdouble r); //Ejercicio 3: triángulo RGB 
+	static Mesh* generaRectangulo(GLdouble w, GLdouble h); //Ejercicio 4: rectángulo RGB.
+	static Mesh* generaRectanguloRGB(GLdouble w, GLdouble h); //Ejercicio 4: rectángulo RGB.
+	static Mesh* generaEstrella3D(GLdouble re, GLdouble np, GLdouble h, GLdouble ri);  //Ejercicio 5: Estrella 3D.
+	static Mesh* generaContCubo(GLdouble l); //Ejercicio 6: Caja.
 
 	Mesh(void) { };
 	~Mesh(void);
