@@ -204,7 +204,7 @@ Mesh* Mesh::generaEstrella3D(GLdouble re, GLdouble np, GLdouble h, GLdouble ri) 
 	GLdouble angIni = 90;
 	GLdouble incrAng = 180 / np;
 
-
+	
 	m->vertices[0] = dvec3(0,0,0);
 	m->vertices[1] = dvec3(re*cos(radians(angIni)), re*sin(radians(angIni)),h);
 
@@ -215,7 +215,6 @@ Mesh* Mesh::generaEstrella3D(GLdouble re, GLdouble np, GLdouble h, GLdouble ri) 
 		m->vertices[i+1] = dvec3(re*cos(radians(angIni)), re*sin(radians(angIni)), h);
 	}
 
-	//m->vertices[m->numVertices-1]= dvec3(re*cos(radians(90)), re*sin(radians(90)), h);
 
 
 	return m;

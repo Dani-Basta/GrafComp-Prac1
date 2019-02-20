@@ -19,6 +19,7 @@ public:
     Scene() { };
 	~Scene();
     void init(); 
+	void update();
 
     void render(Camera const& cam);
 	  

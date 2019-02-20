@@ -22,7 +22,8 @@ void Scene::init()
 
 
   //Ejes de la escena.
-  //grObjects.push_back(new EjesRGB(200.0)); 
+  
+  grObjects.push_back(new EjesRGB(200.0)); 
 
   //Poliespirales.
 
@@ -44,7 +45,15 @@ void Scene::init()
 
   //Caja 3D
 
-  grObjects.push_back(new Caja(60));
+  //grObjects.push_back(new Caja(60));
+
+
+  //Triangulo Animado (Escena 2D)
+
+  grObjects.push_back(new TrianguloAnimado(40.0, 0.0, 0.0, 15.0));
+
+
+  //grObjects.push_back( new Estrella3D(120, 6, 100, 60) );
 
 
 }
@@ -65,6 +74,15 @@ void Scene::render(Camera const& cam)
 	for (Entity* el: grObjects)
 	{
 		el->render(cam);
+	}
+}
+//-------------------------------------------------------------------------
+
+void Scene::update()
+{
+	for (Entity* el : grObjects)
+	{
+		el->update();
 	}
 }
 //-------------------------------------------------------------------------

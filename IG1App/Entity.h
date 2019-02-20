@@ -17,6 +17,8 @@ public:
 	virtual ~Entity() { };
 
 	virtual void render(Camera const& cam) = 0;
+	virtual void update();
+
 
 	// modeling matrix
 	glm::dmat4 const& getModelMat() const { return modelMat; };
@@ -39,6 +41,7 @@ public:
 	EjesRGB(GLdouble l);
 	~EjesRGB();
 	virtual void render(Camera const& cam); 
+	virtual void update();
 };
 
 //-------------------------------------------------------------------------
@@ -50,6 +53,7 @@ public:
 		GLdouble incrLado, GLdouble numVert);
 	~Poliespiral();
 	virtual void render(Camera const& cam);
+	virtual void update();
 };
 
 //-------------------------------------------------------------------------
@@ -59,6 +63,7 @@ public:
 	Dragon(GLuint numVert);
 	~Dragon();
 	virtual void render(Camera const& cam);
+	virtual void update();
 };
 
 //-------------------------------------------------------------------------
@@ -68,6 +73,7 @@ public:
 	TrianguloRGB(GLdouble r);
 	~TrianguloRGB();
 	virtual void render(Camera const& cam);
+	virtual void update();
 };
 
 //-------------------------------------------------------------------------
@@ -77,6 +83,7 @@ public:
 	RectanguloRGB(GLdouble w, GLdouble h);
 	~RectanguloRGB();
 	virtual void render(Camera const& cam);
+	virtual void update();
 };
 
 //-------------------------------------------------------------------------
@@ -86,6 +93,7 @@ public:
 	Estrella3D(GLdouble re, GLdouble np, GLdouble h, GLdouble ri);
 	~Estrella3D();
 	virtual void render(Camera const& cam);
+	virtual void update();
 };
 
 //-------------------------------------------------------------------------
@@ -96,10 +104,27 @@ public:
 	Caja(GLdouble l);
 	~Caja();
 	virtual void render(Camera const& cam);
+	virtual void update();
 };
 
 //-------------------------------------------------------------------------
 
+class TrianguloAnimado : public Entity {
+private:
+	//definir el centro de giro
+	GLdouble x;
+	GLdouble y;
+
+	GLdouble grades;
+	GLdouble gradeIncr;
+
+public:
+	
+	TrianguloAnimado(GLdouble r, GLdouble x, GLdouble y, GLdouble gradeIncr);
+	~TrianguloAnimado();
+	virtual void render(Camera const& cam);
+	virtual void update();
+};
 
 
 
