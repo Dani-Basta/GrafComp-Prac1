@@ -28,6 +28,7 @@ public:
 protected:
 
 	Mesh* mesh = nullptr;   // surface mesh
+	Mesh* meshAux = nullptr;
 	glm::dmat4 modelMat;    // modeling matrix
 
 	// transfers modelViewMat to the GPU
@@ -89,6 +90,10 @@ public:
 //-------------------------------------------------------------------------
 
 class Estrella3D: public Entity {
+
+	GLdouble grades;
+	GLdouble gradeIncr;
+
 public:
 	Estrella3D(GLdouble re, GLdouble np, GLdouble h, GLdouble ri);
 	~Estrella3D();

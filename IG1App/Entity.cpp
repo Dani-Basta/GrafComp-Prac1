@@ -178,8 +178,9 @@ void RectanguloRGB::render(Camera const& cam) {
 
 		dmat4 matAux = cam.getViewMat();
 		//matAux = rotate(matAux, glm::radians(25.0), dvec3(1, 1, 1));
-		matAux = rotate(matAux, glm::radians(-25.0), dvec3(0, 0, 100));
-
+		//matAux = rotate(matAux, glm::radians(-25.0), dvec3(0, 0, 100));
+		matAux = translate(matAux, dvec3(-100.0, 0.0, -100.0));
+		matAux = rotate(matAux, radians(90.0), dvec3(1.0, 0.0, 0.0));
 
 		uploadMvM(matAux);
 
@@ -208,6 +209,8 @@ void RectanguloRGB::update()
 
 Estrella3D::Estrella3D(GLdouble re, GLdouble np, GLdouble h, GLdouble ri) : Entity() {
 	mesh = Mesh::generaEstrella3D(re, np, h,ri);
+	gradeIncr = 3;
+	grades = 0;
 }
 //-------------------------------------------------------------------------
 
@@ -221,7 +224,7 @@ Estrella3D::~Estrella3D() {
 void Estrella3D::render(Camera const& cam) {
 	if (mesh != nullptr) {
 
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		glLineWidth(1); //Indicamos el grosor de las líneas con la que se renderizará la malla.
 		glColor3d(0.0, 0.5, 1.0);	//Ponemos un color.
@@ -229,13 +232,28 @@ void Estrella3D::render(Camera const& cam) {
 		dmat4 auxMat = modelMat;
 		// si la entidad tiene animación y queremos que afecte a todas las partes ->
 		// dmat4 auxMat = modelMat * matAnima;
-		modelMat = auxMat;
+		//modelMat = auxMat;
+
+		modelMat = translate(modelMat, dvec3(-100.0, 100.0, -100.0));
+
+
+		modelMat = rotate(modelMat, radians(this->grades), dvec3(0.0, 1.0, 0.0));
+		modelMat = rotate(modelMat, radians(this->grades), dvec3(0.0, 0.0, 1.0));
+
+		uploadMvM(cam.getViewMat()); // envía a la GPU cam.getVie
+
 		uploadMvM(cam.getViewMat()); // envía a la GPU cam.getViewMat() * modelMat
 		mesh->render();
+
+		//modelMat = auxMat;
 
 		glColor3d(1.0, 0.0, 0.0);	//Ponemos otro color.
 
 		modelMat = rotate(modelMat, radians(180.0), dvec3(0.0, 1.0, 0.0));
+
+		//modelMat = rotate(modelMat, radians(this->grades), dvec3(0.0, 1.0, 0.0));
+		//modelMat = rotate(modelMat, radians(this->grades), dvec3(0.0, 0.0, 1.0));
+
 		uploadMvM(cam.getViewMat()); // envía a la GPU cam.getViewMat() * modelMat
 		mesh->render();
 
@@ -252,17 +270,20 @@ void Estrella3D::render(Camera const& cam) {
 
 void Estrella3D::update()
 {
+	this->grades = this->gradeIncr + this->grades;
 }
 
 //-------------------------------------------------------------------------
 
 Caja::Caja(GLdouble l) : Entity() {
 	mesh = Mesh::generaContCubo(l);
+	meshAux = Mesh::generaRectangulo(l, l);
 }
 //-------------------------------------------------------------------------
 
 Caja::~Caja() {
 	delete mesh; mesh = nullptr;
+	delete meshAux; meshAux = nullptr;
 };
 //-------------------------------------------------------------------------
 
@@ -271,7 +292,15 @@ Caja::~Caja() {
 void Caja::render(Camera const& cam) {
 	if (mesh != nullptr) {
 
-		uploadMvM(cam.getViewMat());
+		dmat4 matAux = cam.getViewMat();
+
+		//el 30 es porque esta puesto que es de 60x60, falta añadir atributo
+		matAux = translate(matAux, dvec3(0.0, 30.0, 0.0));
+
+		matAux = translate(matAux, dvec3(-100.0, 0.0, -100.0));
+
+		uploadMvM(matAux);
+
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glLineWidth(2); //Indicamos el grosor de las líneas con la que se renderizará la malla.
 		glColor3d(0.0, 0.5, 0.5);	//Ponemos el color.
@@ -279,11 +308,28 @@ void Caja::render(Camera const& cam) {
 
 		//glPolygonMode(GL_BACK, GL_POINT);
 
+
+
 		mesh->render();
+
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		matAux = cam.getViewMat();
+
+		matAux = translate(matAux, dvec3(-100.0, 0.0, -100.0));
+		matAux = rotate(matAux, radians(90.0), dvec3(1.0, 0.0, 0.0));
+
+
+		uploadMvM(matAux);
+
+		meshAux->render();
 
 		glLineWidth(1); //Ponemos las opciones gráficas (el grosor de la línea) por defecto. Se hace por establecer un orden. MUY RECOMENDABLE. 
 		//glPointSize(1);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+
+
 
 	}
 }

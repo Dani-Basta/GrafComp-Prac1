@@ -35,7 +35,7 @@ void Scene::init()
   //grObjects.push_back(new Dragon(3000));
   
   //Rectangulo  
-  //grObjects.push_back(new RectanguloRGB(200, 100));
+  grObjects.push_back(new RectanguloRGB(200, 100));
   
   //Triangulo
   //grObjects.push_back( new TrianguloRGB(300) );
@@ -45,15 +45,15 @@ void Scene::init()
 
   //Caja 3D
 
-  //grObjects.push_back(new Caja(60));
+  grObjects.push_back(new Caja(60));
 
 
   //Triangulo Animado (Escena 2D)
 
-  grObjects.push_back(new TrianguloAnimado(40.0, 0.0, 0.0, 15.0));
+  //grObjects.push_back(new TrianguloAnimado(40.0, 0.0, 0.0, 15.0));
 
 
-  //grObjects.push_back( new Estrella3D(120, 6, 100, 60) );
+  grObjects.push_back( new Estrella3D(50, 6, 40, 30) );
 
 
 }
