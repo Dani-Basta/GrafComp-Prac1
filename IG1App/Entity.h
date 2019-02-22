@@ -7,6 +7,7 @@
 
 #include "Camera.h"
 #include "Mesh.h"
+#include "Pixmap32RGBA.h"
 
 //-------------------------------------------------------------------------
 
@@ -30,6 +31,8 @@ protected:
 	Mesh* mesh = nullptr;   // surface mesh
 	Mesh* meshAux = nullptr;
 	glm::dmat4 modelMat;    // modeling matrix
+
+	Texture texture;
 
 	// transfers modelViewMat to the GPU
 	virtual void uploadMvM(glm::dmat4 const& modelViewMat) const;
