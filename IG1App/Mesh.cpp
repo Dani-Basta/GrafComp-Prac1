@@ -1,5 +1,6 @@
 #include "Mesh.h"
 
+
 using namespace glm;
 
 //-------------------------------------------------------------------------
@@ -21,21 +22,39 @@ void Mesh::render()
       glColorPointer(4, GL_DOUBLE, 0, colors);   // number of coordinates per color, type of each coordinate, stride, pointer 
     }
 	
+	if (texCoords != nullptr) {
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glTexCoordPointer(2, GL_DOUBLE, 0, texCoords);
+	}
+
+
+
     glDrawArrays(primitive, 0, numVertices);   // primitive graphic, first index and number of elements to be rendered
 
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     glDisableClientState(GL_COLOR_ARRAY);
+
+
+
   }
 }
 //-------------------------------------------------------------------------
 
-//Crea una malla con los ejes RGB
+/*
+	A partir de aquí se definen las funciones que crearán las mallas. 
+
+	Estás funciones las llamarán en entity.cpp.
+*/
+
+
+//-------------------------------------------------------------------------
+
+
 Mesh * Mesh::createRGBAxes(GLdouble l)
 {
   Mesh* m = new Mesh();
-  m->primitive = GL_LINES;  
-  m->numVertices = 6;	//Número de vértices de la figura que dibujamos. 
- //Dibujamos objetos en 3 dimensiones, entonces tenemos 6 vértices.
+  m->primitive = GL_LINES;
+  m->numVertices = 6;
 
   m->vertices = new dvec3[m->numVertices];
   // X axis vertices
@@ -63,50 +82,50 @@ Mesh * Mesh::createRGBAxes(GLdouble l)
 }
 //-------------------------------------------------------------------------
 
-Mesh* Mesh::generaPoliespiral(dvec2 verIni, GLdouble angIni, GLdouble incrAng, GLdouble ladoIni,
-	GLdouble incrLado, GLdouble numVert) {
+//POLIESPIRAL
+
+Mesh * Mesh::generaPoliespiral(glm::dvec2 verIni, GLdouble angIni, GLdouble incrAng, GLdouble ladoIni, GLdouble incrLado, GLuint numVert)
+{
+	GLdouble x, y;
 
 	Mesh* m = new Mesh();
 	m->primitive = GL_LINE_STRIP;
-	m->numVertices = numVert;	//Número de vértices de la figura que dibujamos. 
+	m->numVertices = numVert;
 
 	m->vertices = new dvec3[m->numVertices];
 
-	double x = verIni.x;
-	double y = verIni.y;
 
-	double lado = ladoIni;
-	double angulo = angIni;
+	//Asignamos una las posiciones de los distintos vértices de la malla.
+	
+	x = verIni.x;
+	y = verIni.y;
 
-	//Primer vértice.
-	m->vertices[0] = dvec3(x, y, 0.0);
+	m->vertices[0] = dvec3(x, y, 0); //Es 2D, de modo que z sería 0.
 
 	for (int i = 1; i < m->numVertices; i++) {
-		//Calculamos x del nuevo vértice.
-		x += lado * cos(radians(angulo));
 
-		//Calculamos y del nuevo vértice.
-		y += lado * sin(radians(angulo));
+		angIni += incrAng;
+		ladoIni += incrLado;
 
-		//Añadimos el nuevo vértice.
-		m->vertices[i] = dvec3(x,y,0.0);
-
-		//Incrementamos el angulo y la longitud.
-		lado += incrLado;
-		angulo += incrAng;
+		x += ladoIni * cos(radians(angIni));
+		y += ladoIni * sin(radians(angIni));
+		
+		m->vertices[i] = dvec3(x, y, 0);
 	}
 
 	return m;
 }
 //-------------------------------------------------------------------------
 
-Mesh* Mesh::generaDragon(GLuint numVert) { //Ejercicio 2: crea un dragon
-	
+//DRAGÓN
+
+Mesh * Mesh::generaDragon(GLuint numVert)
+{
+	GLdouble x, y;
+
 	Mesh* m = new Mesh();
 	m->primitive = GL_POINTS;
-	m->numVertices = numVert;	//Número de vértices de la figura que dibujamos. 
-
-	//Dibujamos objetos en 3 dimensiones, entonces tenemos 6 vértices.
+	m->numVertices = numVert;
 
 	m->vertices = new dvec3[m->numVertices];
 
@@ -114,42 +133,56 @@ Mesh* Mesh::generaDragon(GLuint numVert) { //Ejercicio 2: crea un dragon
 
 	for (int i = 1; i < numVert; i++) {
 		if ((rand() / double(RAND_MAX)) < 0.787473)  // T1
-			m->vertices[i] = dvec3(0.824074 * m->vertices[i-1].x + 0.281482 * m->vertices[i - 1].y - 0.882290,
-									-0.212346 * m->vertices[i - 1].x + 0.864198 * m->vertices[i - 1].y - 0.110607,
-									0.0);
-		 else 
+			m->vertices[i] = dvec3(0.824074 * m->vertices[i - 1].x + 0.281482 * m->vertices[i - 1].y - 0.882290,
+				-0.212346 * m->vertices[i - 1].x + 0.864198 * m->vertices[i - 1].y - 0.110607,
+				0.0);
+		else
 			m->vertices[i] = dvec3(0.088272 * m->vertices[i - 1].x + 0.520988 * m->vertices[i - 1].y + 0.785360,
-								-0.463889 * m->vertices[i - 1].x - 0.377778 * m->vertices[i - 1].y + 8.095795,
-							0.0);
+				-0.463889 * m->vertices[i - 1].x - 0.377778 * m->vertices[i - 1].y + 8.095795,
+				0.0);
 
+	}
+
+	return m;
+
+}
+//-------------------------------------------------------------------------
+
+
+
+/*
+	GENERA UN TRIÁNGULO EQUILÁTERO DE RADIO R
+*/
+
+
+Mesh * Mesh::generaTriangulo(GLdouble r)
+{
+	Mesh* m = new Mesh();
+	m->primitive = GL_TRIANGLES;
+	m->numVertices = 3;
+
+	m->vertices = new dvec3[m->numVertices];
+
+	//Los valores que utilizaremos para crear la circumferencia son los siguientes:
+	dvec3 centro = dvec3(0.0, 0.0, 0.0);
+	GLdouble angIni = 90;
+	GLdouble incrAng = 120; //EQUIVALENTE A 360 % NUM VERTICES.
+	GLdouble x, y;
+
+	for (int i = 0; i < m->numVertices; i++) {
+		x = centro.x + r * cos(radians(angIni));
+		y = centro.y + r * sin(radians(angIni));
+		
+		m->vertices[i] = dvec3(x, y, 0.0);
+		
+		angIni += incrAng;
 	}
 
 	return m;
 }
 
-//-------------------------------------------------------------------------
 
-
-Mesh* Mesh::generaTriangulo(GLdouble r) { //Ejercicio 3: crea un triangulo RGB
-
-	//Se utilizan los siguientes parámetros:
-	//dvec2 centro = dvec2(0, 0);
-	double angIni = 90;
-	double incrAng = 120;
-
-	Mesh* m = new Mesh();
-	m->primitive = GL_TRIANGLES;
-	m->numVertices = 3;	//Número de vértices de la figura que dibujamos. 
-
-	m->vertices = new dvec3[m->numVertices];
-	m->vertices[0] = dvec3(r*cos(radians(angIni)), r*sin(angIni), 0.0);
-	m->vertices[1] = dvec3(r*cos(radians(angIni + incrAng )), r*sin(radians(angIni + incrAng)), 0.0);
-	m->vertices[2] = dvec3(r*cos(radians(angIni + incrAng*2)), r*sin(radians(angIni + incrAng * 2)), 0.0);
-
-	return m;
-}
-
-Mesh* Mesh::generaTrianguloRGB(GLdouble r) { //Ejercicio 3: crea un triangulo RGB
+Mesh* Mesh::generaTrianguloRGB(GLdouble r) { 
 	Mesh* m = generaTriangulo(r);
 
 	m->colors = new dvec4[m->numVertices];
@@ -160,94 +193,215 @@ Mesh* Mesh::generaTrianguloRGB(GLdouble r) { //Ejercicio 3: crea un triangulo RG
 	return m;
 }
 
+//-------------------------------------------------------------------------
 
-Mesh* Mesh::generaRectangulo(GLdouble w, GLdouble h) {
-	 Mesh* m = new Mesh();
-	 m->primitive = GL_TRIANGLE_STRIP;
-	 m->numVertices = 4;	//Número de vértices de la figura que dibujamos. 4 porque es un rectángulo. 
+/*
+	GENERA UN RECTANGULO
+*/
 
-	 m->vertices = new dvec3[m->numVertices];
 
-	 //Se supone que el centro está en (0.0,0.0,0.0).
-	 m->vertices[0] = dvec3(-w/2,h/2,0.0);
-	 m->vertices[1] = dvec3(-w/2,-h/2,0.0);
-	 m->vertices[2] = dvec3(w/2,h/2 , 0.0);
-	 m->vertices[3] = dvec3(w/2, -h/2 , 0.0 );
-	 
+Mesh * Mesh::generaRectangulo(GLdouble w, GLdouble h)
+{
+	Mesh* m = new Mesh();
+	m->primitive = GL_TRIANGLE_STRIP;
+	m->numVertices = 4;		//Los rectangulos tienen siempre 4 vértices.
 
-	 return m;
+	m->vertices = new dvec3[m->numVertices];
 
+	m->vertices[0] = dvec3(-w / 2, +h / 2, 0.0);
+	m->vertices[1] = dvec3(+w / 2, +h / 2, 0.0);
+	m->vertices[2] = dvec3(-w / 2, -h / 2, 0.0);
+	m->vertices[3] = dvec3(+w / 2, -h / 2, 0.0);
+
+	return m;
 }
 
-Mesh* Mesh::generaRectanguloRGB(GLdouble w, GLdouble h) { //Ejercicio 3: crea un triangulo RGB
-	Mesh* m = generaRectangulo(w,h);
+
+Mesh* Mesh::generaRectanguloRGB(GLdouble w, GLdouble h) { 
+	Mesh* m = generaRectangulo(w, h);
 
 	m->colors = new dvec4[m->numVertices];
 	m->colors[0] = dvec4(1, 0, 0, 0);
 	m->colors[1] = dvec4(0, 1, 0, 0);
 	m->colors[2] = dvec4(0, 0, 1, 0);
-	m->colors[3] = dvec4(0,0,0,1);
-	
+	m->colors[3] = dvec4(0, 0, 0, 1);
+
 	return m;
 }
 
 
-Mesh* Mesh::generaEstrella3D(GLdouble re, GLdouble np, GLdouble h, GLdouble ri) {  //Ejercicio 5: Estrella 3D.
+//-------------------------------------------------------------------------
+
+/*
+	GENERA UNA ESTRELLA 3D
+*/
+
+Mesh*  Mesh::generaEstrella3D(GLdouble re, GLdouble np, GLdouble h, GLdouble ri) {
+
 	Mesh* m = new Mesh();
 	m->primitive = GL_TRIANGLE_FAN;
-	m->numVertices = 2*np+2;	//Número de vértices de la figura que dibujamos. 4 porque es un rectángulo. 
+	m->numVertices = 2 * np + 2;	
 
 	m->vertices = new dvec3[m->numVertices];
 
 	//Se supone que el centro está en (0.0,0.0,0.0).
 	//AngIni es 90 y incrAng = 120.
 	GLdouble angIni = 90;
-	GLdouble incrAng = 180 / np;
+	GLdouble incrAng = 360 / (np*2);
 
-	
-	m->vertices[0] = dvec3(0,0,0);
-	m->vertices[1] = dvec3(re*cos(radians(angIni)), re*sin(radians(angIni)),h);
 
-	for (int i = 2; i <= m->numVertices-2; i+=2) {
+	m->vertices[0] = dvec3(0, 0, 0);
+	m->vertices[1] = dvec3(re*cos(radians(angIni)), re*sin(radians(angIni)), h);
+
+	for (int i = 2; i <= m->numVertices - 2; i += 2) {
 		angIni += incrAng;
 		m->vertices[i] = dvec3(ri*cos(radians(angIni)), ri*sin(radians(angIni)), h);
 		angIni += incrAng;
-		m->vertices[i+1] = dvec3(re*cos(radians(angIni)), re*sin(radians(angIni)), h);
+		m->vertices[i + 1] = dvec3(re*cos(radians(angIni)), re*sin(radians(angIni)), h);
 	}
 
-
-
 	return m;
-
 }
 
-Mesh* Mesh::generaContCubo(GLdouble l) {  //Ejercicio 6: Caja.
+
+//-------------------------------------------------------------------------
+
+
+/*
+	GENERA EL CUBO DESCRITO EN EL ENUNCIADO
+*/
+
+Mesh*  Mesh::generaContCubo(GLdouble l) {
+
 	Mesh* m = new Mesh();
+
 	m->primitive = GL_TRIANGLE_STRIP;
-	m->numVertices = 10;	//Él numero de vertices de la caja. 
+	m->numVertices = 10; // 8 + 2 para cerrar el cubo.	
 
 	m->vertices = new dvec3[m->numVertices];
 
-	//Se supone que el centro está en (0.0,0.0,0.0).
+
+	m->vertices[0] = dvec3(0,l,l);
+	m->vertices[1] = dvec3(0, 0, l);
+	m->vertices[2] = dvec3(l, l, l);
+	m->vertices[3] = dvec3(l, 0, l);
+	m->vertices[4] = dvec3(l, l, 0);
+	m->vertices[5] = dvec3(l, 0, 0);
+	m->vertices[6] = dvec3(0, l, 0);
+	m->vertices[7] = dvec3(0, 0, 0);
+	m->vertices[8] = dvec3(0, l, l);
+	m->vertices[9] = dvec3(0, 0, l);
+	
+	return m;
+}
+
+Mesh* Mesh::generaSueloCubo(GLdouble l) {
+	Mesh* m = new Mesh();
+
+	m->primitive = GL_TRIANGLE_STRIP;
+	m->numVertices = 5;
+	m->vertices = new dvec3[m->numVertices];
 
 
-	GLdouble dist = l / 2;
+	m->vertices[0] = dvec3(0, 0, l);
+	m->vertices[1] = dvec3(l, 0, l);
+	m->vertices[2] = dvec3(l, 0, 0);
+	m->vertices[3] = dvec3(0, 0, 0);
+	m->vertices[4] = dvec3(0, 0, l);
+	return m;
+}
 
-	m->vertices[0] = dvec3(-dist,dist,dist);
-	m->vertices[1] = dvec3(-dist, -dist, dist);
 
-	m->vertices[2] = dvec3(dist, dist, dist);
-	m->vertices[3] = dvec3(dist, -dist, dist);
-	m->vertices[4] = dvec3(dist, dist, -dist);
-	m->vertices[5] = dvec3(dist, -dist, -dist);
-	m->vertices[6] = dvec3(-dist, dist, -dist);
-	m->vertices[7] = dvec3(-dist, -dist, -dist);
+//-------------------------------------------------------------------------
 
-	m->vertices[8] = m->vertices[0];
-	m->vertices[9] = m->vertices[1];
+
+/*
+	RECTANGULO TEX COR
+*/
+
+Mesh*  Mesh::generaRectanguloTexCor(GLdouble w, GLdouble h, GLuint	rw, GLuint rh) {
+
+	Mesh* m = generaRectangulo(w, h);
+
+	m->texCoords = new dvec2[m->numVertices];
+
+	m->texCoords[0] = dvec2(0, rh);
+	m->texCoords[1] = dvec2(rw, rh);
+	m->texCoords[2] = dvec2(0, 0);
+	m->texCoords[3] = dvec2(rw, 0);
+
+	return m;
+}
+
+
+//-------------------------------------------------------------------------
+
+/*
+	ESTRELLA TEX COR
+*/
+
+Mesh*  Mesh::generaEstrellaTexCor(GLdouble r, GLdouble nL, GLdouble	h, GLdouble ri){
+
+	Mesh* m = generaEstrella3D(r, nL, h,ri);
+
+	m->texCoords = new dvec2[m->numVertices];
+
+	GLdouble angIni = 90;
+	GLdouble incrAng = 360 / (nL*2);
+	//Utilizaremos R = 0.5
+
+	m->texCoords[0] = dvec2(0, 0);
+	m->texCoords[1] = dvec3(0.5*cos(radians(angIni)), 0.5*sin(radians(angIni)), h);
+
+	for (int i = 2; i <= m->numVertices - 2; i += 2) {
+		angIni += incrAng;
+		m->texCoords[i] = dvec3(0.25*cos(radians(angIni)), 0.25*sin(radians(angIni)), h);
+		angIni += incrAng;
+		m->texCoords[i + 1] = dvec3(0.5*cos(radians(angIni)), 0.5*sin(radians(angIni)), h);
+	}
 
 
 	return m;
-
-
 }
+
+
+//-------------------------------------------------------------------------
+
+/*
+	GENERA EL CUBO TEXCOR
+*/
+
+Mesh*  Mesh::generaCajaTexCor(GLdouble l) {
+
+	Mesh* m = generaContCubo(l);
+	m->texCoords = new dvec2[m->numVertices];
+
+	
+	m->texCoords[0] = dvec2(1,0);
+	m->texCoords[1] = dvec2(0, 0);
+	m->texCoords[2] = dvec2(1, 1);
+	m->texCoords[3] = dvec2(0, 1);
+	m->texCoords[4] = dvec2(1, 2);
+	m->texCoords[5] = dvec2(0, 2);
+	m->texCoords[6] = dvec2(1, 3);
+	m->texCoords[7] = dvec2(0, 3);
+	m->texCoords[8] = dvec2(1, 4);
+	m->texCoords[9] = dvec2(0, 4);
+	
+
+	return m;
+}
+
+Mesh* Mesh::generaSueloTexCor(GLdouble l) {
+	Mesh* m = generaSueloCubo(l);
+	m->texCoords = new dvec2[m->numVertices];
+
+	m->texCoords[0] = dvec2(0, 1);
+	m->texCoords[1] = dvec2(1, 1);
+	m->texCoords[2] = dvec2(1, 0);
+	m->texCoords[3] = dvec2(0, 0);
+	m->texCoords[4] = dvec2(0, 1);
+
+	return m;
+}
+

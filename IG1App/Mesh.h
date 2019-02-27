@@ -7,19 +7,28 @@
 
 //-------------------------------------------------------------------------
 
+
+
+
 class Mesh 
 {
 public:
+
+	//Para cada objeto que creemos, creamos su malla correspondiente (si corresponde). Introducir el método aquí.
 	static Mesh* createRGBAxes(GLdouble l); // creates a new 3D RGB axes mesh
-	static Mesh* generaPoliespiral(glm::dvec2 verIni, GLdouble angIni, GLdouble incrAng, GLdouble ladoIni,
-		GLdouble incrLado, GLdouble numVert); //Ejercicio 1: crea una espiral
-	static Mesh* generaDragon(GLuint numVert); //Ejercicio 2: crea un dragon
-	static Mesh* generaTriangulo(GLdouble r); //Ejercicio 3: triángulo RGB 
-	static Mesh* generaTrianguloRGB(GLdouble r); //Ejercicio 3: triángulo RGB 
-	static Mesh* generaRectangulo(GLdouble w, GLdouble h); //Ejercicio 4: rectángulo RGB.
-	static Mesh* generaRectanguloRGB(GLdouble w, GLdouble h); //Ejercicio 4: rectángulo RGB.
-	static Mesh* generaEstrella3D(GLdouble re, GLdouble np, GLdouble h, GLdouble ri);  //Ejercicio 5: Estrella 3D.
-	static Mesh* generaContCubo(GLdouble l); //Ejercicio 6: Caja.
+	static Mesh* generaPoliespiral(glm::dvec2 verIni, GLdouble angIni, GLdouble incrAng, GLdouble ladoIni, GLdouble incrLado, GLuint numVert);
+	static Mesh* generaDragon(GLuint numVert); //Genera el dragón descrito en el enunciado.
+	static Mesh* generaTriangulo(GLdouble r); //Genera un triangulo equilatero de radio r.
+	static Mesh* generaTrianguloRGB(GLdouble r); //Genera un triangulo RGB utilizando generaTriangulo.
+	static Mesh* generaRectangulo(GLdouble w, GLdouble h); //Genera un rectangulo 2D de altura h y anchura w.
+	static Mesh* generaRectanguloRGB(GLdouble w, GLdouble h); //Genera el rectangulo RGB utilizando la función generaRectangulo.
+	static Mesh* generaEstrella3D(GLdouble re, GLdouble np, GLdouble h,GLdouble ri);  //Genera la estrella 3D descrita en el enunciado.
+	static Mesh* generaContCubo(GLdouble l); //Para generar el cubo descrito en el enunciado.
+	static Mesh* generaSueloCubo(GLdouble l); //Para generar el suelo (rectangulo) del cubo anterior.
+	static Mesh* generaRectanguloTexCor(GLdouble w, GLdouble h, GLuint rw, GLuint rh); 
+	static Mesh* generaEstrellaTexCor(GLdouble r, GLdouble nL, GLdouble	h, GLdouble ri);
+	static Mesh* generaCajaTexCor(GLdouble l);
+	static Mesh* generaSueloTexCor(GLdouble l);
 
 	Mesh(void) { };
 	~Mesh(void);
@@ -35,6 +44,8 @@ protected:
 
 	glm::dvec3* vertices = nullptr;  // vertex array
 	glm::dvec4* colors = nullptr;    // color array
+	glm::dvec2* texCoords = nullptr; // array de coordenadas de textura.
+
 };
 
 //-------------------------------------------------------------------------

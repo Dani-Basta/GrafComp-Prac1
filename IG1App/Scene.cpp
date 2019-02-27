@@ -7,56 +7,92 @@ using namespace glm;
 
 //-------------------------------------------------------------------------
 
-void Scene::init()
-{ // OpenGL basic setting
-  glClearColor(1.0, 1.0, 1.0, 1.0);  // background color (alpha=1 -> opaque) --> Cuando se tenga una escena vacía.
-  glEnable(GL_DEPTH_TEST);  // enable Depth test 
-     
-  // lights
-  // textures  
-  // meshes
+//Escena 2D.
+void Scene::init2D() {
+	// OpenGL basic setting
 
-  // grObjects.push_back(); 
-
-  // Graphics objects (entities) of the scene
+	//Eliminamos los objetos que habia antes.
+	grObjects.clear();
 
 
-  //Ejes de la escena.
-  
-  grObjects.push_back(new EjesRGB(200.0)); 
+	glClearColor(1.0, 1.0, 1.0, 1.0);  // background color (alpha=1 -> opaque)
+	glEnable(GL_DEPTH_TEST);  // enable Depth test 
+	//glEnable(GL_TEXTURE_2D);
 
-  //Poliespirales.
+	// lights
+	// textures  
+	// meshes
 
-  //grObjects.push_back(new Poliespiral( dvec2(0.0, 0.0), 0.0, 160.0, 1.0, 1.0, 50.0) );
-  //grObjects.push_back(new Poliespiral(dvec2(0.0, 0.0), 0.0, 72.0, 30.0, 0.001, 6.0)); //pentágono
-  //grObjects.push_back(new Poliespiral(dvec2(0.0, 0.0), 0.0, 60.0, 0.5, 0.5, 100.0));
+	// Graphics objects (entities) of the scene
+	grObjects.push_back(new EjesRGB(200.0));
 
-  //Dragon
-  //grObjects.push_back(new Dragon(3000));
-  
-  //Rectangulo  
-  grObjects.push_back(new RectanguloRGB(200, 100));
-  
-  //Triangulo
-  //grObjects.push_back( new TrianguloRGB(300) );
-
-  //Estrella 3D
-  //grObjects.push_back( new Estrella3D(64,4,32,32));
-
-  //Caja 3D
-
-  grObjects.push_back(new Caja(60));
+	//Escena 2D
+	grObjects.push_back(new Poliespiral(dvec2(0, 0), 0, 160, 1, 1, 50));
+	grObjects.push_back(new Dragon(3000));
+	grObjects.push_back(new TrianguloRGB(50));
+	grObjects.push_back(new RectanguloRGB(30, 20));
+	grObjects.push_back(new TrianguloAnimado(40, 0, 0, 15));
+}
 
 
-  //Triangulo Animado (Escena 2D)
+//Escena 3D
+void Scene::init3D() {
+	// OpenGL basic setting
 
-  //grObjects.push_back(new TrianguloAnimado(40.0, 0.0, 0.0, 15.0));
+	grObjects.clear();
 
 
-  grObjects.push_back( new Estrella3D(50, 6, 40, 30) );
+	glClearColor(1.0, 1.0, 1.0, 1.0);  // background color (alpha=1 -> opaque)
+	glEnable(GL_DEPTH_TEST);  // enable Depth test 
+	//glEnable(GL_TEXTURE_2D);
+
+	// lights
+	// textures  
+	// meshes
+	
+	// Graphics objects (entities) of the scene
+	grObjects.push_back(new EjesRGB(200.0));
+
+	//Escena 3D
+
+	grObjects.push_back(new RectanguloRGB(500, 200));
+	grObjects.push_back(new Cubo3D(60));
+	grObjects.push_back(new Estrella3D(60, 6, 30, 30));
+	
+
+
+	
+
+}
+
+//Escena para las texturas
+void Scene::initTex() {
+	// OpenGL basic setting
+
+	grObjects.clear();
+
+
+	glClearColor(1.0, 1.0, 1.0, 1.0);  // background color (alpha=1 -> opaque)
+	glEnable(GL_DEPTH_TEST);  // enable Depth test 
+	glEnable(GL_TEXTURE_2D);
+
+	// lights
+	// textures  
+	// meshes
+	/*
+	// Graphics objects (entities) of the scene
+	grObjects.push_back(new EjesRGB(200.0));
+	*/
+
+	//grObjects.push_back(new RectanguloTexCor(100, 100, 2, 3));
+	//grObjects.push_back(new EstrellaTexCor(60, 6, 30, 30));
+	grObjects.push_back(new CajaTexCor(60));
 
 
 }
+
+
+
 //-------------------------------------------------------------------------
 
 Scene::~Scene()
@@ -86,4 +122,6 @@ void Scene::update()
 	}
 }
 //-------------------------------------------------------------------------
+
+
 

@@ -27,9 +27,7 @@ Scene scene;
 
 //----------- Callbacks ----------------------------------------------------
 
-//Qué hará cuando se despliegue la pantalla.
 void display();
-//Qué haá cuando se cambie el tamaño de la pantalla.
 void resize(int newWidth, int newHeight);
 void key(unsigned char key, int x, int y);
 void specialKey(int key, int x, int y);
@@ -43,8 +41,8 @@ int main(int argc, char *argv[])
   // Initialization
   glutInit(&argc, argv);
 
-  glutInitContextVersion(3, 3);  //Versión de GLUT 3.3
-  glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE); //Versión compatible (añadimos comandos de otras versiones; requiere compatibilidad)  // GLUT_CORE_PROFILE
+  glutInitContextVersion(3, 3);
+  glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);  // GLUT_CORE_PROFILE
   glutInitContextFlags(GLUT_DEBUG);   // GLUT_FORWARD_COMPATIBLE
  
   glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS); 
@@ -52,7 +50,6 @@ int main(int argc, char *argv[])
   glutInitWindowSize(800, 600);   // window size
   //glutInitWindowPosition (140, 140);
 
-  //GLUT_DOUBLE => DOBLE BUFFER.
   glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH /*| GLUT_STENCIL*/); // RGBA colors, double buffer, depth buffer and stencil buffer   
   
   int win = glutCreateWindow("IG1App");  // window's identifier
@@ -68,8 +65,8 @@ int main(int argc, char *argv[])
 
   // after creating the context
   camera.set2D();
-  scene.init();    
-  
+  scene.init2D();		//CAMBIADO POR NOSOTROS
+	
   glutMainLoop(); 
     
   //cin.ignore(INT_MAX, '\n');  cin.get();  
@@ -81,11 +78,12 @@ int main(int argc, char *argv[])
 
 void display()   // double buffering
 {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);    
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);   
   
   scene.render(camera);   
     
-  glutSwapBuffers();  //Porque tenemos doble buffer GLUT_DOUBLE
+  glutSwapBuffers();  
+
 }
 //-------------------------------------------------------------------------
 
@@ -103,6 +101,11 @@ void key(unsigned char key, int x, int y)
 {
   bool need_redisplay = true;
 
+
+  /*
+	Este switch determinará qué acción se asocia a cada botón presionado.
+  */
+  
   switch (key) {
   case 27:  // Escape key 
     glutLeaveMainLoop();  // Freeglut's sentence for stopping glut's main loop 
@@ -120,8 +123,18 @@ void key(unsigned char key, int x, int y)
 	camera.set2D();
 	break;
   case 'u':
-	  scene.update();
+	scene.update();
+	break;
+  case '2':
+	  scene.init2D();				//Para el intercambio entre escenas 2D y 3D.
 	  break;
+  case '3':
+	  scene.init3D();
+	  break;
+  case '4':
+	  scene.initTex();
+	  break;
+
   default:
 	need_redisplay = false;
     break;
