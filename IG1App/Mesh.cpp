@@ -299,15 +299,15 @@ Mesh* Mesh::generaSueloCubo(GLdouble l) {
 	Mesh* m = new Mesh();
 
 	m->primitive = GL_TRIANGLE_STRIP;
-	m->numVertices = 5;
+	m->numVertices = 4;
 	m->vertices = new dvec3[m->numVertices];
 
-
 	m->vertices[0] = dvec3(0, 0, l);
-	m->vertices[1] = dvec3(l, 0, l);
-	m->vertices[2] = dvec3(l, 0, 0);
-	m->vertices[3] = dvec3(0, 0, 0);
-	m->vertices[4] = dvec3(0, 0, l);
+	m->vertices[1] = dvec3(0, 0, 0);
+	m->vertices[2] = dvec3(l, 0, l);
+	m->vertices[3] = dvec3(l, 0, 0);
+
+	
 	return m;
 }
 
@@ -396,11 +396,10 @@ Mesh* Mesh::generaSueloTexCor(GLdouble l) {
 	Mesh* m = generaSueloCubo(l);
 	m->texCoords = new dvec2[m->numVertices];
 
-	m->texCoords[0] = dvec2(0, 1);
+	m->texCoords[0] = dvec2(1, 0);
 	m->texCoords[1] = dvec2(1, 1);
-	m->texCoords[2] = dvec2(1, 0);
-	m->texCoords[3] = dvec2(0, 0);
-	m->texCoords[4] = dvec2(0, 1);
+	m->texCoords[2] = dvec2(0, 0);
+	m->texCoords[3] = dvec2(0, 1);
 
 	return m;
 }

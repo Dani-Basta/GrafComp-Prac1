@@ -1,10 +1,5 @@
-﻿  Mesh.cpp
-c:\hlocal\proyectosig_vs17_gl_fg_glm\ig1app\mesh.cpp(105): warning C4018: '<': signed/unsigned mismatch
-c:\hlocal\proyectosig_vs17_gl_fg_glm\ig1app\mesh.cpp(134): warning C4018: '<': signed/unsigned mismatch
-c:\hlocal\proyectosig_vs17_gl_fg_glm\ig1app\mesh.cpp(124): warning C4101: 'y': unreferenced local variable
-c:\hlocal\proyectosig_vs17_gl_fg_glm\ig1app\mesh.cpp(124): warning C4101: 'x': unreferenced local variable
-c:\hlocal\proyectosig_vs17_gl_fg_glm\ig1app\mesh.cpp(172): warning C4018: '<': signed/unsigned mismatch
-c:\hlocal\proyectosig_vs17_gl_fg_glm\ig1app\mesh.cpp(243): warning C4244: '=': conversion from 'GLdouble' to 'GLuint', possible loss of data
-c:\hlocal\proyectosig_vs17_gl_fg_glm\ig1app\mesh.cpp(256): warning C4018: '<=': signed/unsigned mismatch
-c:\hlocal\proyectosig_vs17_gl_fg_glm\ig1app\mesh.cpp(356): warning C4018: '<=': signed/unsigned mismatch
-  IG1App.vcxproj -> C:\hlocal\ProyectosIG_VS17_GL_FG_GLM\bin\IG1AppDebug.exe
+﻿  Entity.cpp
+  Scene.cpp
+  main.cpp
+  Generating Code...
+  IG1App.vcxproj -> C:\hlocal\BIEL\ProyectosIG_VS17_GL_FG_GLM\bin\IG1AppDebug.exe

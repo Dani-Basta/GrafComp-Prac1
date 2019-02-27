@@ -191,6 +191,8 @@ public:
 
 class EstrellaTexCor : public Entity
 {
+	GLdouble angle;
+	GLdouble incrAngle;
 
 public:
 	EstrellaTexCor(GLdouble r, GLdouble nL, GLdouble h, GLdouble ri);
@@ -214,6 +216,22 @@ public:
 };
 
 //-------------------------------------------------------------------------
+
+
+//FOTO
+
+class Foto : public Entity
+{
+
+public:
+	Foto();
+	~Foto();
+	virtual void render(Camera const& cam);
+	virtual void update();
+};
+
+//-------------------------------------------------------------------------
+
 
 
 

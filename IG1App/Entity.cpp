@@ -389,22 +389,18 @@ RectanguloTexCor::~RectanguloTexCor()
 void RectanguloTexCor::render(Camera const& cam)
 {
 	if (mesh != nullptr) {
-		
-		//glColor3d(0.0, 0.0, 1.0); //Establecemos los colores.
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
 		texture.bind( GL_REPLACE );				//Importante para añadir la textura.
 
-		uploadMvM(cam.getViewMat());
 
+		dmat4 modelMatAux = cam.getViewMat();
 
-		mesh->render();  //Dibujamos el cubo.
+		//Rotación necesaria para la escena 3D.
+		modelMatAux = rotate(modelMatAux, radians(90.0), dvec3(1, 0, 0));
+		modelMatAux = rotate(modelMatAux, radians(25.0), dvec3(0.0, 0.0, 1.0));
 
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-		//auxiliarMesh->render();	//Dibujamos el suelo del cubo.
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		uploadMvM(modelMatAux);
 		
+		mesh->render();  //Dibujamos el cubo.		
 		texture.unbind();
 
 	}
@@ -422,6 +418,10 @@ EstrellaTexCor::EstrellaTexCor(GLdouble r, GLdouble nL, GLdouble h, GLdouble ri)
 {
 	mesh = Mesh::generaEstrellaTexCor(r, nL, h, ri);
 	texture.load("baldosaP.bmp");
+
+	this->angle = 0;
+	this->incrAngle = 3;
+
 }
 
 EstrellaTexCor::~EstrellaTexCor()
@@ -432,28 +432,38 @@ EstrellaTexCor::~EstrellaTexCor()
 void EstrellaTexCor::render(Camera const& cam)
 {
 	if (mesh != nullptr) {
+		
+		dmat4 auxModelMat = cam.getViewMat();
 
-		//glColor3d(0.0, 0.0, 1.0); //Establecemos los colores.
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//Traslación para la animación 3D
+		auxModelMat = translate(auxModelMat, dvec3(100, 100, 100));
+
+		//Realizamos la rotación asociada a la animación.		
+		auxModelMat = rotate(auxModelMat, radians(this->angle + 20), dvec3(0, 1, 0)); //Rotamos en el eje Y.
+		auxModelMat = rotate(auxModelMat, radians(this->angle), dvec3(0, 0, 1)); //Rotamos en el eje Z.
 
 		texture.bind(GL_REPLACE);				//Importante para añadir la textura.
 
-		uploadMvM(cam.getViewMat());
+		uploadMvM(auxModelMat);
 
+		mesh->render();  //Se dibuja en este momento.
 
-		mesh->render();  //Dibujamos el cubo.
+		//Para el duplicado asociado.
+		auxModelMat = rotate(auxModelMat, radians(180.0), dvec3(0, 1, 0));
 
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-		//auxiliarMesh->render();	//Dibujamos el suelo del cubo.
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
+		uploadMvM(auxModelMat);
+		mesh->render();  //Se dibuja en este momento.
 		texture.unbind();
 
 	}
 }
 
+
+
+
+
 void EstrellaTexCor::update() {
+	this->angle += this->incrAngle;
 }
 
 //------------------------------------------------------------------------
@@ -464,8 +474,8 @@ CajaTexCor::CajaTexCor(GLdouble l) : Entity()
 {
 	mesh = Mesh::generaCajaTexCor(l);
 	auxiliarMesh = Mesh::generaSueloTexCor(l);
-	texture.load("baldosaP.bmp");
-	textureAux.load("baldosaC.bmp");
+	texture.load("papelE.bmp");
+	textureAux.load("container.bmp");
 }
 
 CajaTexCor::~CajaTexCor()
@@ -495,15 +505,38 @@ void CajaTexCor::render(Camera const& cam)
 		textureAux.unbind();
 
 		glDisable(GL_CULL_FACE);
-
-		//Renderizamos la 
-
 	}
 }
 
 void CajaTexCor::update() {
 }
+//------------------------------------------------------------------------
 
+//FOTO
 
+Foto::Foto() : Entity()
+{
+	//Generamos un rectángulo de 200x100.
+	mesh = Mesh::generaRectangulo(200,100);
+	texture.load("baldosaP.bmp");
+	//textureAux.load("baldosaC.bmp");
+}
 
+Foto::~Foto()
+{
+	delete mesh; mesh = nullptr;
+};
+
+void Foto::render(Camera const& cam)
+{
+	if (mesh != nullptr) {
+		texture.bind(GL_REPLACE);				//Importante para añadir la textura.
+		uploadMvM(cam.getViewMat());
+		mesh->render();  //Dibujamos el cubo.
+		texture.unbind();
+	}
+}
+
+void Foto::update() {
+}
 //------------------------------------------------------------------------

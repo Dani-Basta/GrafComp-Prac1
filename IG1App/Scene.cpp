@@ -7,6 +7,13 @@ using namespace glm;
 
 //-------------------------------------------------------------------------
 
+GLuint time = 0;
+
+GLuint umbral = 50;
+
+
+//-------------------------------------------------------------------------
+
 //Escena 2D.
 void Scene::init2D() {
 	// OpenGL basic setting
@@ -44,54 +51,23 @@ void Scene::init3D() {
 
 	glClearColor(1.0, 1.0, 1.0, 1.0);  // background color (alpha=1 -> opaque)
 	glEnable(GL_DEPTH_TEST);  // enable Depth test 
-	//glEnable(GL_TEXTURE_2D);
-
-	// lights
-	// textures  
-	// meshes
-	
-	// Graphics objects (entities) of the scene
-	grObjects.push_back(new EjesRGB(200.0));
-
-	//Escena 3D
-
-	grObjects.push_back(new RectanguloRGB(500, 200));
-	grObjects.push_back(new Cubo3D(60));
-	grObjects.push_back(new Estrella3D(60, 6, 30, 30));
-	
-
-
-	
-
-}
-
-//Escena para las texturas
-void Scene::initTex() {
-	// OpenGL basic setting
-
-	grObjects.clear();
-
-
-	glClearColor(1.0, 1.0, 1.0, 1.0);  // background color (alpha=1 -> opaque)
-	glEnable(GL_DEPTH_TEST);  // enable Depth test 
 	glEnable(GL_TEXTURE_2D);
 
 	// lights
 	// textures  
 	// meshes
-	/*
+	
 	// Graphics objects (entities) of the scene
 	grObjects.push_back(new EjesRGB(200.0));
-	*/
 
-	//grObjects.push_back(new RectanguloTexCor(100, 100, 2, 3));
-	//grObjects.push_back(new EstrellaTexCor(60, 6, 30, 30));
+	//Escena 3D	
+	grObjects.push_back(new RectanguloTexCor(500, 200, 2, 3));
+	grObjects.push_back(new EstrellaTexCor(60, 6, 30, 30));
 	grObjects.push_back(new CajaTexCor(60));
 
+	
 
 }
-
-
 
 //-------------------------------------------------------------------------
 
@@ -123,5 +99,17 @@ void Scene::update()
 }
 //-------------------------------------------------------------------------
 
+void Scene::update(GLuint timeElapsed)
+{
+	if (timeElapsed - time > umbral) {
+		for (Entity* el : grObjects)
+		{
+			el->update();
+		}
+		time = timeElapsed;
+	}
+
+}
+//-------------------------------------------------------------------------
 
 

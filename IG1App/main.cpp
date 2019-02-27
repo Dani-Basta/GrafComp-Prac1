@@ -25,12 +25,21 @@ Camera camera(&viewPort);
 // Graphics objects of the scene
 Scene scene;   
 
+//Para capturar el último instante en que se realiza la actualización.
+GLuint last_update_tick;
+
+bool activated = true;
+
+
 //----------- Callbacks ----------------------------------------------------
 
 void display();
 void resize(int newWidth, int newHeight);
 void key(unsigned char key, int x, int y);
 void specialKey(int key, int x, int y);
+
+//Añadido por nosotros.
+void Update();
 
 //-------------------------------------------------------------------------
 
@@ -44,7 +53,7 @@ int main(int argc, char *argv[])
   glutInitContextVersion(3, 3);
   glutInitContextProfile(GLUT_COMPATIBILITY_PROFILE);  // GLUT_CORE_PROFILE
   glutInitContextFlags(GLUT_DEBUG);   // GLUT_FORWARD_COMPATIBLE
- 
+  
   glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS); 
   
   glutInitWindowSize(800, 600);   // window size
@@ -59,7 +68,7 @@ int main(int argc, char *argv[])
   glutKeyboardFunc(key);
   glutSpecialFunc(specialKey);
   glutDisplayFunc(display);
- 
+  glutIdleFunc(Update);
   cout << glGetString(GL_VERSION) << '\n';
   cout << glGetString(GL_VENDOR) << '\n';
 
@@ -75,6 +84,20 @@ int main(int argc, char *argv[])
   return 0;
 }
 //-------------------------------------------------------------------------
+
+//AÑADIDA POR NOSOTROS PARA EL UPDATE AUTOMÁTICO
+
+void Update() {
+	if (activated) {
+		last_update_tick = glutGet(GLUT_ELAPSED_TIME);
+		scene.update(last_update_tick);
+		glutPostRedisplay();
+	}
+}
+
+
+//-------------------------------------------------------------------------
+
 
 void display()   // double buffering
 {
@@ -125,16 +148,16 @@ void key(unsigned char key, int x, int y)
   case 'u':
 	scene.update();
 	break;
+  case 'U':
+	  if (activated) activated = false;
+	  else activated = true;
+	  break;
   case '2':
 	  scene.init2D();				//Para el intercambio entre escenas 2D y 3D.
 	  break;
   case '3':
 	  scene.init3D();
 	  break;
-  case '4':
-	  scene.initTex();
-	  break;
-
   default:
 	need_redisplay = false;
     break;
