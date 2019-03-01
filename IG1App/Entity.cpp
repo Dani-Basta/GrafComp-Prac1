@@ -516,10 +516,7 @@ void CajaTexCor::update() {
 
 Foto::Foto() : Entity()
 {
-	//Generamos un rectángulo de 200x100.
-	mesh = Mesh::generaRectangulo(200,100);
-	texture.load("baldosaP.bmp");
-	//textureAux.load("baldosaC.bmp");
+	mesh = Mesh::generaFotoTex(200, 100);
 }
 
 Foto::~Foto()
@@ -530,13 +527,20 @@ Foto::~Foto()
 void Foto::render(Camera const& cam)
 {
 	if (mesh != nullptr) {
+
+		dmat4 auxModelMat = cam.getViewMat();
+
+		//Traslación para la animación 3D
+		auxModelMat = translate(auxModelMat, dvec3(150, 150, 0));
+
 		texture.bind(GL_REPLACE);				//Importante para añadir la textura.
-		uploadMvM(cam.getViewMat());
+		uploadMvM(auxModelMat);
 		mesh->render();  //Dibujamos el cubo.
 		texture.unbind();
 	}
 }
 
 void Foto::update() {
+	texture.loadColorBuffer();
 }
 //------------------------------------------------------------------------

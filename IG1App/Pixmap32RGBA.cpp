@@ -323,3 +323,20 @@ void Texture::load(const std::string & BMP_Name, GLubyte alpha) {
 						GL_UNSIGNED_BYTE, pixMap.data());
 	// transferir a GPU
 }
+
+void Texture::loadColorBuffer() {
+	if (id == 0)
+		init();
+
+	glReadBuffer(GL_FRONT);
+
+	this->bind(GL_REPLACE);
+
+	w = glutGet(GLUT_WINDOW_WIDTH);
+	h = glutGet(GLUT_WINDOW_HEIGHT);
+	
+	glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+		0, 0, w, h, 0);
+
+	this->unbind();
+}

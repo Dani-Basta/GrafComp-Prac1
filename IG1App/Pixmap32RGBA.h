@@ -106,6 +106,8 @@ public:
 			glDeleteTextures(1, &id);
 	};
 	void load(const std::string & BMP_Name, GLubyte alpha = 255);
+	void loadColorBuffer();
+
 	// cargar y transferir a GPU
 	void bind(GLint modo = GL_REPLACE);
 	// para mezcla de colores

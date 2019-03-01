@@ -29,6 +29,7 @@ public:
 	static Mesh* generaEstrellaTexCor(GLdouble r, GLdouble nL, GLdouble	h, GLdouble ri);
 	static Mesh* generaCajaTexCor(GLdouble l);
 	static Mesh* generaSueloTexCor(GLdouble l);
+	static Mesh*  generaFotoTex(GLdouble w, GLdouble h);
 
 	Mesh(void) { };
 	~Mesh(void);

@@ -61,11 +61,13 @@ void Scene::init3D() {
 	grObjects.push_back(new EjesRGB(200.0));
 
 	//Escena 3D	
-	grObjects.push_back(new RectanguloTexCor(500, 200, 2, 3));
-	grObjects.push_back(new EstrellaTexCor(60, 6, 30, 30));
-	grObjects.push_back(new CajaTexCor(60));
-
 	
+	//grObjects.push_back(new RectanguloTexCor(500, 200, 2, 3));
+	grObjects.push_back(new EstrellaTexCor(60, 8, 30, 30));
+	grObjects.push_back(new CajaTexCor(60));
+	
+	grObjects.push_back(new Foto());
+
 
 }
 

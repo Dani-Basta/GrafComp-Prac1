@@ -1,0 +1,12 @@
+Daniel Bastarrica Lacalle
+Gabriel Sellés Salvá
+
+README:
+
+Pulsar 3 para cambiar a escena 3D (como en el enunciado)
+Pulsar 2 para cambiar a escena 2D 
+
+Para hacer un update pulsar 'u' (minuscula)
+Para activar/desactivar update automatico pulsar 'U' (mayuscula)
+
+Implementadas ambas partes opcionales del enunciado

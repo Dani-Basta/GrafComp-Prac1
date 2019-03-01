@@ -348,19 +348,19 @@ Mesh*  Mesh::generaEstrellaTexCor(GLdouble r, GLdouble nL, GLdouble	h, GLdouble 
 
 	GLdouble angIni = 90;
 	GLdouble incrAng = 360 / (nL*2);
+
 	//Utilizaremos R = 0.5
+	ri = (0.5*ri) / r; //Calculamos el radio interior respecto al nuevo radio exterior.
 
 	m->texCoords[0] = dvec2(0, 0);
 	m->texCoords[1] = dvec3(0.5*cos(radians(angIni)), 0.5*sin(radians(angIni)), h);
 
 	for (int i = 2; i <= m->numVertices - 2; i += 2) {
 		angIni += incrAng;
-		m->texCoords[i] = dvec3(0.25*cos(radians(angIni)), 0.25*sin(radians(angIni)), h);
+		m->texCoords[i] = dvec3(ri*cos(radians(angIni)), ri*sin(radians(angIni)), h);
 		angIni += incrAng;
 		m->texCoords[i + 1] = dvec3(0.5*cos(radians(angIni)), 0.5*sin(radians(angIni)), h);
 	}
-
-
 	return m;
 }
 
@@ -375,7 +375,6 @@ Mesh*  Mesh::generaCajaTexCor(GLdouble l) {
 
 	Mesh* m = generaContCubo(l);
 	m->texCoords = new dvec2[m->numVertices];
-
 	
 	m->texCoords[0] = dvec2(1,0);
 	m->texCoords[1] = dvec2(0, 0);
@@ -387,7 +386,6 @@ Mesh*  Mesh::generaCajaTexCor(GLdouble l) {
 	m->texCoords[7] = dvec2(0, 3);
 	m->texCoords[8] = dvec2(1, 4);
 	m->texCoords[9] = dvec2(0, 4);
-	
 
 	return m;
 }
@@ -404,3 +402,21 @@ Mesh* Mesh::generaSueloTexCor(GLdouble l) {
 	return m;
 }
 
+//-------------------------------------------------------------------------
+
+/*
+	FOTO TEX
+*/
+
+Mesh*  Mesh:: generaFotoTex(GLdouble w, GLdouble h) {
+		Mesh* m = generaRectangulo(w, h);
+		
+		m->texCoords = new dvec2[m->numVertices];
+
+		m->texCoords[0] = dvec2(0, 1);
+		m->texCoords[1] = dvec2(1, 1);
+		m->texCoords[2] = dvec2(0, 0);
+		m->texCoords[3] = dvec2(1, 0);
+
+		return m;
+}
