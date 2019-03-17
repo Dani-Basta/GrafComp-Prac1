@@ -1,2 +1,2 @@
-# GrafComp
-Prácticas de la asignatura Gráficos por Computador
+# Gráficos por Computador
+Práctica 1 de la asignatura Gráficos por Computador
